@@ -5,6 +5,7 @@ import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -25,6 +26,12 @@ public class CustomUserDetailsService implements UserDetailsService {
 
 		if (dbUser != null) {
 			Collection<GrantedAuthority> grantedAuthorities = new ArrayList<>();
+			
+			for (String role : dbUser.getRoles()) {
+				GrantedAuthority authority = new SimpleGrantedAuthority(role);
+				grantedAuthorities.add(authority);
+			}
+					
 			org.springframework.security.core.userdetails.User user = new org.springframework.security.core.userdetails.User(
 					dbUser.getUsername(), dbUser.getPassword(), grantedAuthorities);
 			return user;

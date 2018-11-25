@@ -1,7 +1,12 @@
 package com.rokin.oauth2.user.model;
 
+import java.util.List;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
 @Document(collection = "users")
 public class User {
@@ -9,16 +14,19 @@ public class User {
 	private String id;
 	private String name;
 	private String username;
+	@JsonProperty(access = Access.WRITE_ONLY)
 	private String password;
+	private List<String> roles;
 
 	public User() {
 
 	}
 
-	public User(String name, String username, String password) {
+	public User(String name, String username, String password, List<String> roles) {
 		this.name = name;
 		this.username = username;
 		this.password = password;
+		this.roles = roles;
 	}
 
 	public String getId() {
@@ -53,9 +61,18 @@ public class User {
 		this.username = username;
 	}
 
+	public List<String> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(List<String> roles) {
+		this.roles = roles;
+	}
+
 	@Override
 	public String toString() {
-		return "User [id=" + id + ", name=" + name + ", username=" + username + ", password=" + password + "]";
+		return "User [id=" + id + ", name=" + name + ", username=" + username + ", password=" + password + ", roles="
+				+ roles + "]";
 	}
 
 }
