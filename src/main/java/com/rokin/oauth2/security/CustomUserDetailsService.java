@@ -36,7 +36,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 					dbUser.getUsername(), dbUser.getPassword(), grantedAuthorities);
 			return user;
 		} else {
-			throw new UsernameNotFoundException(String.format("User [%s] not found", username));
+			throw new UsernameNotFoundException(String.format("User '%s' not found", username));
 		}
 	}
 

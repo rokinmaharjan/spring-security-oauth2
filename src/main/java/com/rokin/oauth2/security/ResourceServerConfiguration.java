@@ -1,6 +1,5 @@
 package com.rokin.oauth2.security;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
@@ -11,12 +10,11 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Res
 @EnableResourceServer
 public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter {
 
-	@Value("${security.resource.id}")
-	private String resourceId;
-
+	private static final String RESOURCE_ID = "rokin-application";
+	
 	@Override
 	public void configure(ResourceServerSecurityConfigurer resources) throws Exception {
-		resources.resourceId(resourceId);
+		resources.resourceId(RESOURCE_ID);
 	}
 
 	@Override

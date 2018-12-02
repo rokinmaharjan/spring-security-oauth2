@@ -1,7 +1,6 @@
 package com.rokin.oauth2.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -18,38 +17,41 @@ import org.springframework.security.oauth2.provider.token.store.InMemoryTokenSto
 @EnableAuthorizationServer
 public class AuthorizationServerConfiguration extends AuthorizationServerConfigurerAdapter {
 
-	@Value("${security.access-token.valdity.seconds}")
-	private int accessTokenValiditySeconds;
-	
 	@Autowired
 	private AuthenticationManager authenticationManager;
-	
+
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 	
+	@Autowired
+	private CustomUserDetailsService userDetailsService;
+
 	@Override
 	public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
-		security.allowFormAuthenticationForClients();
+		security.allowFormAuthenticationForClients(); //For authenticating client using the form parameters instead of basic auth 
 	}
 
 	@Override
 	public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
 		clients.inMemory()
-			.withClient("rokin-client")
-			.secret(passwordEncoder.encode("secret"))
-			.authorizedGrantTypes("password", "client_credentials")
-			.scopes("all")
-			.accessTokenValiditySeconds(accessTokenValiditySeconds);
+				.withClient("rokin-client")
+				.secret(passwordEncoder.encode("secret"))
+				.authorizedGrantTypes("password", "client_credentials", "refresh_token")
+				.scopes("all")
+				.accessTokenValiditySeconds(3600)
+				.refreshTokenValiditySeconds(86400);
 	}
 
 	@Override
 	public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
-		endpoints.tokenStore(tokenStore()).authenticationManager(authenticationManager);
+		endpoints.tokenStore(tokenStore())
+			.authenticationManager(authenticationManager)
+			.userDetailsService(userDetailsService);
 	}
 
 	@Bean
 	public TokenStore tokenStore() {
 		return new InMemoryTokenStore();
 	}
-	
+
 }

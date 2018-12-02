@@ -11,13 +11,13 @@ import com.rokin.oauth2.user.repository.UserRepository;
 
 @Service
 public class UserService {
-	
+
 	@Autowired
 	private UserRepository userRepository;
-	
+
 	@Autowired
 	private PasswordEncoder passwordEncoder;
-	
+
 	public User saveUser(User user) {
 		user.setPassword(this.passwordEncoder.encode(user.getPassword()));
 		return this.userRepository.save(user);
@@ -26,5 +26,5 @@ public class UserService {
 	public List<User> getAll() {
 		return this.userRepository.findAll();
 	}
-	
+
 }

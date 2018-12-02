@@ -25,12 +25,12 @@ repositories {
 
 
 dependencies {
-	implementation('org.springframework.boot:spring-boot-starter-web')
 	testImplementation('org.springframework.boot:spring-boot-starter-test')
 	
-	//Spring Security
-	compile group: 'org.springframework.security', name: 'spring-security-web', version: '5.1.1.RELEASE'
-	compile group: 'org.springframework.security', name: 'spring-security-config', version: '5.1.1.RELEASE'
+	// Spring boot
+	compile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: '2.1.0.RELEASE'
+	
+	//Spring Security Oauth2
 	compile group: 'org.springframework.security.oauth', name: 'spring-security-oauth2', version: '2.3.4.RELEASE'
 	
 	//Spring Data Mongo
